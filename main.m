@@ -2,8 +2,8 @@ close all;
 clear, clc;
 addpath('C:\Users\Mikanae\Google Drive (maskinne@ualberta.ca)\Pierre_=_ESDLab (FESS Student Projects)\Miles Skinner\Experimental Data\Tensile_Viscoelastic\Tensile tests')
 % Test data
-sg_files = {'SG_GF02' 'SG_GF03_02', 'SG_GF03_03'};
-instron_files = {'Instron_GF02' 'Instron_GF03_02' 'Instron_GF03_03'};
+sg_files = {'SG_GF03_03'};
+instron_files = {'Instron_GF03_03'};
 
 str_strain_text = {'Exp 02-01', 'Reg 02', 'Exp 03-02', 'Reg 02', 'Exp 03-02', 'Reg 03', 'Ha 1999'};
 gauge_text = {'SG-GF02', 'SG-03-02', 'SG-GF03-03'};
@@ -19,7 +19,7 @@ sample_parameters.k = 2.15; % gauge factor (2.09 for GF01 and aluminum, 2.15 for
 sample_parameters.v = 0.3; % theoretical Poisson's ratio for fiberglass composite
 sample_parameters.E = 68.9*10^3; % elastic modulus for AL6061 (MPa)
 sample_parameters.gauge_length = 100; % gauge length of specimen (mm)
-sample_parameters.gain_factor = 200; % voltage signal gain (174 for GF03 2, 200 for GF03 3, and 100 for GF02, GF01, and aluminum)
+sample_parameters.gain_factor = 100; % voltage signal gain (174 for GF03 2, 200 for GF03 3, and 100 for GF02, GF01, and aluminum)
 
 % Setting test parameters
 test_parameters.unit_conversion = 25.4^2; % conversion factor from in^2 to mm^2
@@ -40,9 +40,9 @@ stress_ha = 8.27e3 * strain_ha; %8.27 is transverse E in Ha 1999
 
 
 % Outputting results
-% fprintf('The slope of the regression (Young''s modulus) is %0.1f GPa\n',reg.slope*10^-3)
-% fprintf('The y-intercept of the regression is %0.2f MPa\n',reg.y_int)
-% fprintf('The R^2 value of the regression is %0.4f\n',reg.r2_value)
+fprintf('The slope of the regression (Young''s modulus) is %0.1f GPa\n',reg.slope*10^-3)
+fprintf('The y-intercept of the regression is %0.2f MPa\n',reg.y_int)
+fprintf('The R^2 value of the regression is %0.4f\n',reg.r2_value)
 
 % Plotting
 
