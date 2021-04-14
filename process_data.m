@@ -1,6 +1,6 @@
 addpath('C:\Users\Mikanae\Google Drive (maskinne@ualberta.ca)\Pierre_=_ESDLab (FESS Student Projects)\Miles Skinner\Experimental Data\Tensile_Viscoelastic\Tensile tests\Data CSV')
 exp_name = {'AL01-02'};
-fid = fopen('Exp_List.txt');
+fid = fopen('Exp_List.csv');
 exp_list = textscan(fid, '%s%s%s%f%f%f%f%f%f%f%f%f%s', 'Delimiter', ',', 'Headerlines', 1);
 exp_rows = find(strcmp(exp_name, exp_list{:,1}));
 instron_row = find(strcmp('Instron', exp_list{2}(exp_rows)));
@@ -23,4 +23,3 @@ V_r = (sg_data(:,2) - mean(sg_data(1:100))) / sample_param(6);
 
 sg_strain = (-4 .* V_r) ./ (sample_param(4).*(1 + 2.*V_r)); % Quarter bridge. Assumes lead resistance of the wires is 0
 
-plot(sg_strain, instron_stress)
