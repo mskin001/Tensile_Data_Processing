@@ -25,9 +25,10 @@ area = pi * (sample_param(2)^2 - sample_param(1)^2) / 4; % sample cross section 
 %  ---- Average data over each second -------------------------------------
 %  ------------------------------------------------------------------------
 in_temp = reshape(instron_data(:,3),instron_param(end));
+in_avg_load = mean(in_temp);
 
-
-
+sg_temp = reshape(sg_data(:,2),sg_param(end));
+sg_avg_load = mean(sg_temp);
 
 instron_stress = instron_data(:,3) / area;
 
