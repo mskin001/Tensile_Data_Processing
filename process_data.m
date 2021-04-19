@@ -16,10 +16,10 @@ sg_row = exp_rows(strcmp('SG', exp_list{2}(exp_rows)));
 sg_file = [exp_list{3}{sg_row}, '.csv'];
 sg_data = csvread(sg_file, 10, 0); %starts at A11
 
-param_mat = cell2mat(exp_list(6:13));
+param_mat = cell2mat(exp_list(4:13));
 instron_param = param_mat(instron_row,:);
 sg_param = param_mat(sg_row,:); % param order is the column names in exp_list starting at row 6
-area = pi * (sg_param(2)^2 - sg_param(1)^2) / 4; % sample cross section area
+area = pi * (sg_param(4)^2 - sg_param(3)^2) / 4; % sample cross section area
 
 %% ------------------------------------------------------------------------
 %  ---- Average data over each second -------------------------------------
@@ -48,7 +48,11 @@ in_time = in_time - in_time(1);
 
 in_stress = in_avg_load / area; % [MPa]
 
-V_r = (sg_avg_mv - mean(sg_avg_mv(1:3))) / sg_param(6);
+if sg_param(1) == 0.25
+  V_r = (sg_avg_mv - mean(sg_avg_mv(1:3))) / sg_param(8);
+elseif sg_param(1) == 0.5
+  % half bridge equation
+end
 
-sg_strain = (-4 .* V_r) ./ (sg_param(4).*(1 + 2.*V_r)); % Quarter bridge. Assumes lead resistance of the wires is 0
+sg_strain = (-4 .* V_r) ./ (sg_param(6).*(1 + 2.*V_r)); % Quarter bridge. Assumes lead resistance of the wires is 0
 
