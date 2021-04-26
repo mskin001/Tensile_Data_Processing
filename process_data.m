@@ -5,7 +5,7 @@ addpath('C:\Users\Mikanae\Google Drive (maskinne@ualberta.ca)\Pierre_=_ESDLab (F
 exp_name = {'AL01-02'};
 
 fid = fopen('Exp_List.csv');
-exp_list = textscan(fid, '%s%s%s%f%f%s%f%f%f%f%f%f', 'Delimiter', ',', 'Headerlines', 1);
+exp_list = textscan(fid, '%s%s%s%s%f%f%f%f%f%f%f%f%s', 'Delimiter', ',', 'Headerlines', 1);
 fclose(fid);
 
 fid = fopen('Sample_Data.csv');
@@ -23,14 +23,14 @@ sg_row = exp_rows(strcmp('SG', exp_list{2}(exp_rows)));
 sg_file = [exp_list{3}{sg_row}, '.csv'];
 sg_data = csvread(sg_file, 10, 0); %starts at A11
 
-samp_row = find(strcmp(exp_list{6}{exp_rows(1)},samp_data{1}(:)));
+samp_row = find(strcmp(exp_list{4}{exp_rows(1)},samp_data{1}(:)));
 samp_mat = cell2mat(samp_data(2:7));
 samp_param = samp_mat(samp_row,:);
 
-param_mat = cell2mat(exp_list(4:13));
+param_mat = cell2mat(exp_list(5:12));
 instron_param = param_mat(instron_row,:);
 sg_param = param_mat(sg_row,:); % param order is the column names in exp_list starting at row 6
-area = pi * (sg_param(4)^2 - sg_param(3)^2) / 4; % sample cross section area
+area = pi * (samp_param(2)^2 - samp_param(1)^2) / 4; % sample cross section area
 
 %% ------------------------------------------------------------------------
 %  ---- Average data over each second -------------------------------------
