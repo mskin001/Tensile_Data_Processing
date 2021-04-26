@@ -3,8 +3,15 @@
 %  ------------------------------------------------------------------------
 addpath('C:\Users\Mikanae\Google Drive (maskinne@ualberta.ca)\Pierre_=_ESDLab (FESS Student Projects)\Miles Skinner\Experimental Data\Tensile_Viscoelastic\Tensile tests\Data CSV')
 exp_name = {'AL01-02'};
+
 fid = fopen('Exp_List.csv');
-exp_list = textscan(fid, '%s%s%s%f%f%f%f%f%f%f%f%f%f%s', 'Delimiter', ',', 'Headerlines', 1);
+exp_list = textscan(fid, '%s%s%s%f%f%s%f%f%f%f%f%f', 'Delimiter', ',', 'Headerlines', 1);
+fclose(fid);
+
+fid = fopen('Sample_Data.csv');
+samp_data = textscan(fid, '%s%f%f%f%f%f%f', 'Delimiter', ',', 'Headerlines', 1);
+fclose(fid);
+
 exp_rows = find(strcmp(exp_name, exp_list{:,1}));
 
 instron_row = exp_rows(strcmp('Instron', exp_list{2}(exp_rows)));
@@ -15,6 +22,10 @@ sg_row = exp_rows(strcmp('SG', exp_list{2}(exp_rows)));
   % need if-then statement for separating half and quarter bridge conditions
 sg_file = [exp_list{3}{sg_row}, '.csv'];
 sg_data = csvread(sg_file, 10, 0); %starts at A11
+
+samp_row = find(strcmp(exp_list{6}{exp_rows(1)},samp_data{1}(:)));
+samp_mat = cell2mat(samp_data(2:7));
+samp_param = samp_mat(samp_row,:);
 
 param_mat = cell2mat(exp_list(4:13));
 instron_param = param_mat(instron_row,:);
