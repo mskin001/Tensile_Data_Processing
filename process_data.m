@@ -65,9 +65,10 @@ in_stress = in_avg_load / eff_area; % [MPa]
 
 if sg_param(1) == 0.25
   V_r = (sg_avg_mv - mean(sg_avg_mv(1:3))) / sg_param(8);
+  sg_strain = (-4 .* V_r) ./ (sg_param(6).*(1 + 2.*V_r)); % Quarter bridge. Assumes lead resistance of the wires is 0
 elseif sg_param(1) == 0.5
   % half bridge equation
 end
 
-sg_strain = (-4 .* V_r) ./ (sg_param(6).*(1 + 2.*V_r)); % Quarter bridge. Assumes lead resistance of the wires is 0
+
 
