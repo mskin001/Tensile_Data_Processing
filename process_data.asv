@@ -2,7 +2,7 @@
 %  ---- Load experimental data --------------------------------------------
 %  ------------------------------------------------------------------------
 addpath('C:\Users\Mikanae\Google Drive (maskinne@ualberta.ca)\Pierre_=_ESDLab (FESS Student Projects)\Miles Skinner\Experimental Data\Tensile_Viscoelastic\Tensile tests\Data CSV')
-exp_name = {'GF04-03'};
+exp_name = {'GF02-01'};
 
 fid = fopen('Exp_List.csv');
 exp_list = textscan(fid, '%s%s%s%s%f%f%f%f%f%f%f%f%s', 'Delimiter', ',', 'Headerlines', 1);
@@ -30,11 +30,11 @@ samp_param = samp_mat(samp_row,:);
 param_mat = cell2mat(exp_list(5:12));
 instron_param = param_mat(instron_row,:);
 sg_param = param_mat(sg_row,:); % param order is the column names in exp_list starting at row 6
-
 try
   eff_area = calculate_effective_area(samp_param);
+  
 catch
-  area = pi * (samp_param(2)^2 - samp_param(1)^2) / 4; % sample cross section area
+  
 end
 %% ------------------------------------------------------------------------
 %  ---- Average data over each second -------------------------------------
