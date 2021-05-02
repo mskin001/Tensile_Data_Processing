@@ -1,9 +1,9 @@
 close all;
 clear, clc;
-addpath('C:\Users\Mikanae\Google Drive (maskinne@ualberta.ca)\Pierre_=_ESDLab (FESS Student Projects)\Miles Skinner\Experimental Data\Tensile_Viscoelastic\Tensile tests')
+addpath('C:\Users\Mikanae\Google Drive (maskinne@ualberta.ca)\Pierre_=_ESDLab (FESS Student Projects)\Miles Skinner\Experimental Data\Tensile_Viscoelastic\Tensile tests\Data CSV')
 % Test data
-sg_files = {'SG_GF03_03'};
-instron_files = {'Instron_GF03_03'};
+sg_files = {'SG_GF02_01.csv'};
+instron_files = {'Instron_GF02_01.csv'};
 
 str_strain_text = {'Exp 02-01', 'Reg 02', 'Exp 03-02', 'Reg 02', 'Exp 03-02', 'Reg 03', 'Ha 1999'};
 gauge_text = {'SG-GF02', 'SG-03-02', 'SG-GF03-03'};

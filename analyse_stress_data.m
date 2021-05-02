@@ -1,16 +1,16 @@
 function [gauge, instron, reg] = analyse_stress_data(instron_file, sg_file, sample_parameters, test_parameters)
 % Instron data
-instron_data = xlsread(instron_file);
-start_instron = 16; % row at which instron data numerical values begin in Excel sheet (may vary between data sets)
-instron_time = instron_data(start_instron:end,1);
-instron_extension = instron_data(start_instron:end,2);
-instron_load = instron_data(start_instron:end,3);
+instron_data = csvread(instron_file, 2, 0);
+% start_instron = 3; % row at which instron data numerical values begin in Excel sheet (may vary between data sets)
+instron_time = instron_data(:,1);
+instron_extension = instron_data(:,2);
+instron_load = instron_data(:,3);
 
 % Gauge data
-gauge_data = xlsread(sg_file);
-start_gauge = 11; % row at which gauge data numerical values begin in Excel sheet (may vary between data sets)
-gauge_time = gauge_data(start_gauge:end,1);
-gauge_voltage = gauge_data(start_gauge:end,2);
+gauge_data = csvread(sg_file, 10, 0);
+% start_gauge = 11; % row at which gauge data numerical values begin in Excel sheet (may vary between data sets)
+gauge_time = gauge_data(:,1);
+gauge_voltage = gauge_data(:,2);
 
 % Preallocation
 gauge = struct('strain_rolling100', [], 'time_modified', []);

@@ -22,4 +22,4 @@ end
 avg_cover_thick = mean(cover) * 1000; %average cover thickness in mm
 wall_thick = sum(cover) * 1000; %wall thickness in mm
 ro = (ri*1000) + wall_thick; %outer radius in mm
-eff_area = (ro^2 - ri^2) * pi;
+eff_area = (ro^2 - (ri*1000)^2) * pi;
