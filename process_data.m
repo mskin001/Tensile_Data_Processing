@@ -2,7 +2,7 @@
 %  ---- Load experimental data --------------------------------------------
 %  ------------------------------------------------------------------------
 addpath('C:\Users\Mikanae\Google Drive (maskinne@ualberta.ca)\Pierre_=_ESDLab (FESS Student Projects)\Miles Skinner\Experimental Data\Tensile_Viscoelastic\Tensile tests\Data CSV')
-exp_name = {'GF04-02'};
+exp_name = {'GF05-01'};
 bridge = 1; % specify bridge type. 1 = half, 2 = quarter
 
 fid = fopen('Exp_List.csv');
@@ -80,15 +80,15 @@ in_stress = in_avg_load / eff_area; % [MPa]
 in_strain = in_avg_ext / sg_param(3);
 
 if sg_param(1) == 0.25
-    % Quarter bridge. Assumes lead resistance of the wires is 0. Always
+  % Quarter bridge. Assumes lead resistance of the wires is 0. Always
   % positive.
   V_r = (sg_avg_mv - mean(sg_avg_mv(1:3))) / (sg_param(6));
   sg_strain = abs((-4 .* V_r) ./ (sg_param(4).*(1 + 2.*V_r)));
-  sg = (-8 .* sg_avg_mv) ./ ((sg_param(4) .* sg_param(6)) .* (2 + 4.*(sg_avg_mv./sg_param(6))));
 elseif sg_param(1) == 0.5
   % half bridge equation
   V_r = (sg_avg_mv - mean(sg_avg_mv(1:3))) / (sg_param(6));
-  sg_strain = abs((-4.*V_r) ./ (sg_param(4)*(1+samp_param(10) - 2.*V_r.*(samp_param(10)-1))));
+  sg_strain = abs((-4.*V_r) ./ (sg_param(4)*((1+samp_param(10))...
+    - 2.*V_r.*(samp_param(10)-1))));
 end
 
 figure(), hold on
