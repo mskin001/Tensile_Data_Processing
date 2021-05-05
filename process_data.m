@@ -1,45 +1,4 @@
-%% ------------------------------------------------------------------------
-%  ---- Load experimental data --------------------------------------------
-%  ------------------------------------------------------------------------
-addpath('C:\Users\Mikanae\Google Drive (maskinne@ualberta.ca)\Pierre_=_ESDLab (FESS Student Projects)\Miles Skinner\Experimental Data\Tensile_Viscoelastic\Tensile tests\Data CSV')
-exp_name = {'GF05-01'};
-bridge = 1; % specify bridge type. 1 = half, 2 = quarter
-
-fid = fopen('Exp_List.csv');
-exp_list = textscan(fid, '%s%s%s%s%f%f%f%f%f%f%f%f%s', 'Delimiter', ',', 'Headerlines', 1);
-fclose(fid);
-
-fid = fopen('Sample_Data.csv');
-samp_data = textscan(fid, '%s%f%f%f%f%f%f%f%f%f%f', 'Delimiter', ',', 'Headerlines', 1);
-fclose(fid);
-
-exp_rows = find(strcmp(exp_name, exp_list{:,1}));
-
-instron_row = exp_rows(strcmp('Instron', exp_list{2}(exp_rows)));
-instron_file = [exp_list{3}{instron_row}, '.csv'];
-instron_data = csvread(instron_file, 2, 0); % starts at A3
-
-sg_row = exp_rows(strcmp('SG', exp_list{2}(exp_rows)));
-  % need if-then statement for separating half and quarter bridge conditions
-sg_file = [exp_list{3}{sg_row(bridge)}, '.csv'];
-sg_data = csvread(sg_file, 10, 0); %starts at A11
-
-samp_row = find(strcmp(exp_list{4}{exp_rows(1)},samp_data{1}(:)));
-samp_mat = cell2mat(samp_data(2:11));
-samp_param = samp_mat(samp_row,:);
-
-param_mat = cell2mat(exp_list(5:12));
-instron_param = param_mat(instron_row,:);
-sg_param = param_mat(sg_row(bridge),:); % param order is the column names in exp_list starting at C5.
-  %Bridge_type, Direction, Gauge_length, Gauge_factor, Gain, Input_voltage,
-  %Volume_fraction, Sample rate
-
-try
-  eff_area = calculate_effective_area(samp_param);
-catch
-  %geometric area when winding parameters not available
-  eff_area = pi * (samp_param(2)^2 - samp_param(1)^2) / 4; % sample cross section area
-end
+function [in, sg] = process_data(eff_area, sg_data, sg_param, instron_data, instron_param, samp_param)
 %% ------------------------------------------------------------------------
 %  ---- Average data over each second -------------------------------------
 %  ------------------------------------------------------------------------
@@ -63,8 +22,6 @@ if ~test == 0
   instron_data(1:test,:) = [];
 end
 
-% simple_process(sg_data, instron_data, samp_param, sg_param)
-
 in_temp = reshape(instron_data(:,3),[instron_param(end),...
   length(instron_data(:,3))/instron_param(end)]);
 in_avg_load = mean(in_temp)';
@@ -76,6 +33,9 @@ in_avg_ext = mean(in_ext);
 in_time = instron_data(1:instron_param(end):end,1);
 in_time = in_time - in_time(1);
 
+%% ------------------------------------------------------------------------
+%  ---- Process measured data ---------------------------------------------
+%  ------------------------------------------------------------------------
 in_stress = in_avg_load / eff_area; % [MPa]
 in_strain = in_avg_ext / sg_param(3);
 
@@ -91,13 +51,16 @@ elseif sg_param(1) == 0.5
     - 2.*V_r.*(samp_param(10)-1))));
 end
 
-figure(), hold on
-plot(in_time, in_strain, 'b-');
-plot(sg_time, sg_strain, 'r-');
+%% ------------------------------------------------------------------------
+%  ---- Output results ----------------------------------------------------
+%  ------------------------------------------------------------------------
+in.stress = in_stress;
+in.strain = in_strain;
+in.time = in_time;
 
-figure(), hold on
-plot(sg_strain(1:length(in_stress)), in_stress, 'r-')
-plot(in_strain, in_stress, 'b-')
+sg.strain = sg_strain(1:length(in.strain));
+sg.time = sg_time(1:length(in.time));
+
 
 
 

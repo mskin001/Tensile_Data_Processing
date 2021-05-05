@@ -1,92 +1,89 @@
-close all;
-clear, clc;
-addpath('C:\Users\Mikanae\Google Drive (maskinne@ualberta.ca)\Pierre_=_ESDLab (FESS Student Projects)\Miles Skinner\Experimental Data\Tensile_Viscoelastic\Tensile tests\Data CSV')
-% Test data
-sg_files = {'SG_GF02_01.csv'};
-instron_files = {'Instron_GF02_01.csv'};
+clear, close
 
-str_strain_text = {'Exp 02-01', 'Reg 02', 'Exp 03-02', 'Reg 02', 'Exp 03-02', 'Reg 03', 'Ha 1999'};
-gauge_text = {'SG-GF02', 'SG-03-02', 'SG-GF03-03'};
-instron_text = {'Instron-GF02', 'Instron-GF03-02', 'Instron-GF03-03'};
+addpath(['C:\Users\Mikanae\Google Drive (maskinne@ualberta.ca)\'...
+  'Pierre_=_ESDLab (FESS Student Projects)\Miles Skinner\'...
+  'Experimental Data\Tensile_Viscoelastic\Tensile tests\Data CSV'])
 
-% Sample parameters
-d_inner = 25.4; % inner diameter of the specimen (mm)
-d_outer_min = 26.4; % minimum outer diameter (mm)
-d_outer_max = 27.4; % maximum outer diamete (mm)
-d_outer_average = mean([d_outer_min d_outer_max]); % average outer diameter (mm)
+exp_name = {'GF05-02'};
 
-sample_parameters.k = 2.15; % gauge factor (2.09 for GF01 and aluminum, 2.15 for GF02 and GF03)
-sample_parameters.v = 0.3; % theoretical Poisson's ratio for fiberglass composite
-sample_parameters.E = 68.9*10^3; % elastic modulus for AL6061 (MPa)
-sample_parameters.gauge_length = 100; % gauge length of specimen (mm)
-sample_parameters.gain_factor = 100; % voltage signal gain (174 for GF03 2, 200 for GF03 3, and 100 for GF02, GF01, and aluminum)
+%% ------------------------------------------------------------------------
+%  ---- Load experimental data --------------------------------------------
+%  ------------------------------------------------------------------------
+fid = fopen('Exp_List.csv');
+exp_list = textscan(fid, '%s%s%s%s%f%f%f%f%f%f%f%f%s', 'Delimiter', ',', 'Headerlines', 1);
+fclose(fid);
 
-% Setting test parameters
-test_parameters.unit_conversion = 25.4^2; % conversion factor from in^2 to mm^2
-test_parameters.voltage_source = 5; % Wheatstone bridge source voltage (V)
+fid = fopen('Sample_Data.csv');
+samp_data = textscan(fid, '%s%f%f%f%f%f%f%f%f%f%f', 'Delimiter', ',', 'Headerlines', 1);
+fclose(fid);
 
-sample_parameters.area = (pi * (d_outer_average^2 - d_inner^2)) / 4;
+%% ------------------------------------------------------------------------
+%  ---- Parse Data --------------------------------------------------------
+%  ------------------------------------------------------------------------
+exp_rows = find(strcmp(exp_name, exp_list{:,1}));
+param_mat = cell2mat(exp_list(5:12));
 
-% Analyse data
-for k = 1:length(sg_files)
-  [gauge_exp_results, instron_exp_results, reg_exp_results] = analyse_stress_data(instron_files{k}, sg_files{k}, sample_parameters, test_parameters);
-  gauge(k) = gauge_exp_results;
-  instron(k) = instron_exp_results;
-  reg(k) = reg_exp_results;
+instron_row = exp_rows(strcmp('Instron', exp_list{2}(exp_rows)));
+instron_file = [exp_list{3}{instron_row}, '.csv'];
+instron_data = csvread(instron_file, 2, 0); % starts at A3
+instron_param = param_mat(instron_row,:);
+
+sg_row = exp_rows(strcmp('SG', exp_list{2}(exp_rows)));
+  % need if-then statement for separating half and quarter bridge conditions
+rows = length(sg_row);
+
+for k = 1:rows
+  sg_file = [exp_list{3}{sg_row(k)}, '.csv'];
+  sg_data(:,:,k) = csvread(sg_file, 10, 0); %starts at A11
+  sg_param(k,:) = param_mat(sg_row(k),:); % param order is the column names in exp_list starting at C5.
+    %Bridge_type, Direction, Gauge_length, Gauge_factor, Gain, Input_voltage,
+    %Volume_fraction, Sample rate
 end
 
-strain_ha = linspace(0, 1.6e-3, 100);
-stress_ha = 8.27e3 * strain_ha; %8.27 is transverse E in Ha 1999
+samp_row = find(strcmp(exp_list{4}{exp_rows(1)},samp_data{1}(:)));
+samp_mat = cell2mat(samp_data(2:11));
+samp_param = samp_mat(samp_row,:);
 
-
-% Outputting results
-fprintf('The slope of the regression (Young''s modulus) is %0.1f GPa\n',reg.slope*10^-3)
-fprintf('The y-intercept of the regression is %0.2f MPa\n',reg.y_int)
-fprintf('The R^2 value of the regression is %0.4f\n',reg.r2_value)
-
-% Plotting
-
-% Plotting stress-strain curves w/ regression
-figure(1), hold on
-for k = 1:length(gauge)
-  plot(gauge(k).strain_rolling100,instron(k).stress,'-s','MarkerIndices',1:3000:length(instron(k).stress))
-  plot(gauge(k).strain_rolling100,reg(k).line,'--')
-end
-plot(strain_ha, stress_ha)
-
-title('Stress-Strain Plot')
-xlabel('Strain [mm/mm]')
-ylabel('Applied Stress [MPa]')
-legend(str_strain_text, 'Location', 'northeast')
-ymax1 = get(gca, 'YLim');
-set(gca, 'Fontsize', 11, 'YLim', [0 ymax1(2)])
-grid on
-
-%% Time Plots
-% Plotting gauge strain vs. time
-figure(2), hold on
-for k = 1:length(gauge)
-  plot(gauge(k).time_modified, gauge(k).strain_rolling100,'-s','MarkerIndices',1:3000:length(gauge(k).strain_rolling100))
+%% ------------------------------------------------------------------------
+%  ---- Begin Calculations ------------------------------------------------
+%  ------------------------------------------------------------------------
+try
+  eff_area = calculate_effective_area(samp_param);
+catch
+  %geometric area when winding parameters not available
+  eff_area = pi * (samp_param(2)^2 - samp_param(1)^2) / 4; % sample cross section area
 end
 
-title('Gauge Strain-Time Plot')
-xlabel('Time [s]')
-ylabel('Strain [mm/mm]')
-legend(gauge_text,'Location','southeast')
-ymax2 = get(gca,'YLim');
-set(gca,'Fontsize',11,'YLim',[0 ymax2(2)])
-grid on
-
-% Plotting Instron strain vs. time
-figure(3), hold on
-for k = 1:length(gauge)
-  plot(instron(k).time,instron(k).strain,'-s','MarkerIndices',1:3000:length(instron(k).time))
+for k = 1:rows
+  % Process Instron and strain gauge data
+  [results.in{k}, results.sg{k}] = process_data...
+    (eff_area, sg_data(:,:,k), sg_param(k,:), instron_data, instron_param, samp_param);
+  
+  % Linear regression to find Young's modulus
+  % intermediate array before calculating regression values
+  intermediate = ([ones(length(results.sg{k}.strain),1),...
+    results.sg{k}.strain]);
+  % "\" operator on array for linear regression
+  regress = intermediate \ results.in{k}.stress; 
+  y_int(k) = regress(1); % [MPa]
+  m(k) = regress(2); % slope a.k.a Young's modulus(MPa)
 end
 
-title('Instron Strain-Time Plot')
-xlabel('Time [s]')
-ylabel('Strain (mm/mm)')
-legend(instron_text,'Location','southeast')
-ymax3 = get(gca,'YLim');
-set(gca,'Fontsize',11,'YLim',[0 ymax3(2)])
-grid on
+%% ------------------------------------------------------------------------
+%  ---- Plotting and output -----------------------------------------------
+%  ------------------------------------------------------------------------
+figure(), hold on
+for k = 1:rows
+  plot(results.sg{k}.time, results.sg{k}.strain);
+end
+% plot(results.in{k}.time, results.in{k}.strain);
+xlabel('time [s]'), ylabel('strain')
+legend({'GF05-01-H', 'GF05-01-Q', 'instron'})
+
+figure(), hold on
+for k = 1:rows
+  plot(results.sg{k}.strain, results.in{k}.stress)
+end
+% plot(results.in{k}.strain, results.in{k}.stress)
+xlabel('strain'), ylabel('stress')
+legend({'GF05-01-H', 'GF05-01-Q', 'Instron'}) 
