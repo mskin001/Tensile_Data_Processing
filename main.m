@@ -4,14 +4,15 @@ addpath(['C:\Users\Mikanae\Google Drive (maskinne@ualberta.ca)\'...
   'Pierre_=_ESDLab (FESS Student Projects)\Miles Skinner\'...
   'Experimental Data\Tensile_Viscoelastic\Tensile tests\Data CSV'])
 
-exp_name = {'GF04-01', 'GF05-02'};
+exp_name = {'GF05-01', 'GF05-02', 'GF05-03'};
+legText = {'H-05-01', 'Q-05-01', 'H-05-02', 'Q-05-02', 'H-05-02'};
 b = 0; % indexing variable
 while ~isempty(exp_name)
   %% ------------------------------------------------------------------------
   %  ---- Load experimental data --------------------------------------------
   %  ------------------------------------------------------------------------
   fid = fopen('Exp_List.csv');
-  exp_list = textscan(fid, '%s%s%s%s%f%f%f%f%f%f%f%f%s', 'Delimiter', ',', 'Headerlines', 1);
+  exp_list = textscan(fid, '%s%s%s%s%f%f%f%f%f%f%f%f%s%s', 'Delimiter', ',', 'Headerlines', 1);
   fclose(fid);
 
   fid = fopen('Sample_Data.csv');
@@ -84,7 +85,7 @@ for k = 1:b
 end
 % plot(results.in{k}.time, results.in{k}.strain);
 xlabel('time [s]'), ylabel('% strain')
-legend({'H-05-01', 'Q-05-01', 'H-05-02', 'Q-05-02', 'instron'}, 'Location', 'NorthWest')
+legend(legText, 'Location', 'NorthWest')
 set(gca, 'FontSize', 12)
 
 figure(), hold on
@@ -92,7 +93,8 @@ for k = 1:b
   plot(results.sg{k}.strain, results.in{k}.stress)
 end
 % plot(results.in{k}.strain, results.in{k}.stress)
-slope = num2str(mean([m(1) m(3)])/1000);
+
+slope = num2str(mean([m(1) m(3)]) / 1000);
 str = [slope, ' GPa'];
 text(0.4e-3, 9, str, 'FontSize', 12)
 
@@ -101,5 +103,8 @@ str = [slope, ' GPa'];
 text(0.8e-3, 7, str, 'FontSize', 12)
 xlabel('Strain'), ylabel('Stress')
 
-legend({'H-05-01', 'Q-05-01', 'H-05-02', 'Q-05-02', 'Instron'}, 'Location', 'SouthEast')
+slope = num2str(m(end)/1000);
+str = [slope, ' GPa'];
+text(0.85e-3, 12.5, str, 'FontSize', 12)
+legend(legText, 'Location', 'SouthEast')
 set(gca, 'FontSize', 12)
