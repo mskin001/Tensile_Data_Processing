@@ -1,11 +1,16 @@
 clear, close all
 
-addpath(['C:\Users\Mikanae\Google Drive (maskinne@ualberta.ca)\'...
-  'Pierre_=_ESDLab (FESS Student Projects)\Miles Skinner\'...
-  'Experimental Data\Tensile_Viscoelastic\Tensile tests\Data CSV'])
+% addpath(['C:\Users\Mikanae\Google Drive (maskinne@ualberta.ca)\'...
+%   'Pierre_=_ESDLab (FESS Student Projects)\Miles Skinner\'...
+%   'Experimental Data\Tensile_Viscoelastic\Tensile tests\Data CSV'])
 
-exp_name = {'GF05-01', 'GF05-02', 'GF05-03'};
-legText = {'H-05-01', 'Q-05-01', 'H-05-02', 'Q-05-02', 'H-05-02'};
+addpath(['C:\Users\skinn\Google Drive (maskinne@ualberta.ca)\'...
+  'Pierre_=_ESDLab (FESS Student Projects)\Miles Skinner\Experimental Data\'...
+  'Tensile_Viscoelastic\Tensile tests\Data CSV'])
+
+exp_name = {'GF05-01', 'GF05-02', 'GF08-01', 'GF09-01', 'GF10-01'};
+legText = {'H-05-01', 'Q-05-01', 'H-05-02', 'Q-05-02', 'H-08-01', 'Q-08-01', 'H-09-01',...
+  'Q-09-01', 'H-10-01', 'Q-10-01'};
 b = 0; % indexing variable
 while ~isempty(exp_name)
   %% ------------------------------------------------------------------------
@@ -94,17 +99,17 @@ for k = 1:b
 end
 % plot(results.in{k}.strain, results.in{k}.stress)
 
-slope = num2str(mean([m(1) m(3)]) / 1000);
+slope = num2str(mean([m(1)]) / 1000);
 str = [slope, ' GPa'];
 text(0.4e-3, 9, str, 'FontSize', 12)
 
-slope = num2str(mean([m(2), m(3)])/1000);
+slope = num2str(mean([m(2)])/1000);
 str = [slope, ' GPa'];
 text(0.8e-3, 7, str, 'FontSize', 12)
 xlabel('Strain'), ylabel('Stress')
 
-slope = num2str(m(end)/1000);
-str = [slope, ' GPa'];
-text(0.85e-3, 12.5, str, 'FontSize', 12)
+% slope = num2str(m(end)/1000);
+% str = [slope, ' GPa'];
+% text(0.85e-3, 12.5, str, 'FontSize', 12)
 legend(legText, 'Location', 'SouthEast')
 set(gca, 'FontSize', 12)
