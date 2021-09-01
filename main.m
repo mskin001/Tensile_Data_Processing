@@ -11,6 +11,14 @@ addpath(['C:\Users\skinn\Google Drive (maskinne@ualberta.ca)\'...
 exp_name = {'GF05-01', 'GF05-02', 'GF08-01', 'GF09-01', 'GF10-01'};
 legText = {'H-05-01', 'Q-05-01', 'H-05-02', 'Q-05-02', 'H-08-01', 'Q-08-01', 'H-09-01',...
   'Q-09-01', 'H-10-01', 'Q-10-01'};
+=======
+addpath(['C:\Users\Mikanae\Google Drive (maskinne@ualberta.ca)\'...
+    'FESS Student Projects\Miles Skinner\Experimental Data\Tensile_Viscoelastic\'...
+    'Tensile tests\Data CSV'])
+
+exp_name = {'GF05-01', 'GF05-02', 'GF05-03'};
+legText = {'H-05-01', 'Q-05-01', 'H-05-02', 'Q-05-02', 'H-05-03'};
+>>>>>>> Stashed changes
 b = 0; % indexing variable
 while ~isempty(exp_name)
   %% ------------------------------------------------------------------------
