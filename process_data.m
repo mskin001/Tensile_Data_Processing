@@ -7,7 +7,7 @@ if ~test == 0
   sg_data(1:test,:) = [];
 end
 
-sg_temp = reshape(sg_data(:,2),[sg_param(end),length(sg_data(:,3))/sg_param(end)]);
+sg_temp = reshape(sg_data(:,2),[sg_param(end),length(sg_data(:,2))/sg_param(end)]);
 sg_avg_mv = mean(sg_temp)';
 exp_start_time = find(abs(sg_avg_mv(1:50)) <=  mean(abs(sg_avg_mv(1:3))));
 sg_avg_mv(1:exp_start_time(end)) = [];
