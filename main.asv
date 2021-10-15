@@ -121,8 +121,7 @@ for k = 1:b
 end
 % plot(results.in{k}.strain, results.in{k}.stress)
 
-figure()
-plot(results.lc{1}.time, results.lc{1}.stress)
+plot(results.lc.time, results.lc.stress)
 slope = num2str(mean([m(1)]) / 1000);
 str = [slope, ' GPa'];
 text(0.4e-3, 9, str, 'FontSize', 12)
