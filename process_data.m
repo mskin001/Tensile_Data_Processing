@@ -8,7 +8,7 @@ if ~test == 0
 end
 
 sg_temp = reshape(sg_data(:,2),[sg_param(end),length(sg_data(:,2))/sg_param(end)]);
-sg_avg_mv = mean(sg_temp)';
+sg_avg_mv = mean(sg_temp,1)';
 % exp_start_time = find(abs(sg_avg_mv(1:50)) <=  mean(abs(sg_avg_mv(1:3))));
 % sg_avg_mv(1:exp_start_time(end)) = [];
 sg_avg_mv = sg_avg_mv / sg_param(5);
@@ -24,11 +24,11 @@ end
 
 in_temp = reshape(instron_data(:,end),[instron_param(end),...
   length(instron_data(:,end))/instron_param(end)]);
-in_avg_load = mean(in_temp)';
+in_avg_load = mean(in_temp,1)';
 
 in_ext = reshape(instron_data(:,2),[instron_param(end),...
   length(instron_data(:,2))/instron_param(end)]);
-in_avg_ext = mean(in_ext);
+in_avg_ext = mean(in_ext,1);
 
 in_time = instron_data(1:instron_param(end):end,1);
 in_time = in_time - in_time(1);

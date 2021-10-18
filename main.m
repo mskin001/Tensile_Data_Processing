@@ -2,7 +2,7 @@ clear, close all
 
 addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data\'...
     'Tensile Viscoelastic'])
-exp_name = {'GF06-02-Prelim'};
+exp_name = {'GF07-03-Prelim'};
 legText = {'H-05-01', 'Q-05-01', 'H-05-02', 'Q-05-02', 'H-08-01', 'Q-08-01', 'H-09-01',...
   'Q-09-01', 'H-10-01', 'Q-10-01'};
 exp_type = 'VE';
@@ -59,21 +59,23 @@ while ~isempty(exp_name)
         
         exp_file = [exp_list{3}{exp_rows}, '.csv'];
         exp_data = csvread(exp_file);
-        
         lc_param = param_mat(exp_rows,:);
+        sg_param{1} = lc_param;
+        sg_param{1}(1) = 0.25;
+        sg_param{2} = sg_param{1};
+        sg_param{2}(1) = 0.5;
+        
         lc_data = exp_data(:,1:2); % load cell (time, voltage)
         lc_data(:,2) = lc_data(:,2)./2100;
-        lc_data(:,2) = lc_data(:,2).* 6.617e5 + 5.88; %converts voltage to load [N]. See load_cell_characterization.m
+        lc_data(:,2) = lc_data(:,2).* 1.544e6 + 84.24; %converts voltage to load [N]. See load_cell_characterization.m
         
         sg_data{1} = exp_data(:,5:6); % half bridge (time, voltage)
         sg_data{2} = exp_data(:,3:4); % quarter bridge (time, volatge)
         rows = length(sg_data);
-        sg_param{1} = lc_param;
-        sg_param{1}(1) = 0.5;
-        sg_param{2} = sg_param{1};
-        sg_param{2}(1) = 0.25;
+        
         
     end
+    disp('Begin Calculations')
     %% ------------------------------------------------------------------------
     %  ---- Begin Calculations ------------------------------------------------
     %  ------------------------------------------------------------------------
@@ -102,7 +104,7 @@ while ~isempty(exp_name)
     exp_name(1) = [];
 
 end
-
+disp('begin plotting')
 %% ------------------------------------------------------------------------
 %  ---- Plotting and output -----------------------------------------------
 %  ------------------------------------------------------------------------
@@ -112,7 +114,7 @@ for k = 1:b
 end
 % plot(results.in{k}.time, results.in{k}.strain);
 xlabel('time [s]'), ylabel('% strain')
-legend(legText, 'Location', 'NorthWest')
+% legend(legText, 'Location', 'NorthWest')
 set(gca, 'FontSize', 12)
 
 figure(), hold on
@@ -135,5 +137,5 @@ xlabel('Strain'), ylabel('Stress')
 % slope = num2str(m(end)/1000);
 % str = [slope, ' GPa'];
 % text(0.85e-3, 12.5, str, 'FontSize', 12)
-legend(legText, 'Location', 'SouthEast')
+% legend(legText, 'Location', 'SouthEast')
 set(gca, 'FontSize', 12)

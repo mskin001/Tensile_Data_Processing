@@ -1,6 +1,6 @@
 lc_data = load('Load Cell 2.csv');
 lc_samp_rate = 10;
-lc_gain = 900;
+lc_gain = 2100;
 mts_data = load('MTS810 LoadCell2.csv');
 mts_samp_rate = 10;
 
