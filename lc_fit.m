@@ -26,10 +26,11 @@ ft = fittype( 'poly1' );
 % Plot fit with data.
 figure( 'Name', 'untitled fit 1' );
 h = plot( fitresult, xData, yData );
-legend( h, 'bf_y vs. bf_x', 'untitled fit 1', 'Location', 'NorthEast', 'Interpreter', 'none' );
+legend( h, 'Sensor Data', 'Best Fit', 'Location', 'NorthEast', 'Interpreter', 'none' );
 % Label axes
-xlabel( 'bf_x', 'Interpreter', 'none' );
-ylabel( 'bf_y', 'Interpreter', 'none' );
+xlabel( 'Voltage [V]', 'Interpreter', 'none' );
+ylabel( 'Force [N]', 'Interpreter', 'none' );
 grid on
+set(gca, 'Fontsize', 12)
 
 

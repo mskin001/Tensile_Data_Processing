@@ -2,10 +2,11 @@ clear, close all
 
 addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data\'...
     'Tensile Viscoelastic'])
-exp_name = {'GF07-03-Prelim'};
+
+exp_name = {'GF08-01', 'GF09-01' 'GF10-01'};
 legText = {'H-05-01', 'Q-05-01', 'H-05-02', 'Q-05-02', 'H-08-01', 'Q-08-01', 'H-09-01',...
   'Q-09-01', 'H-10-01', 'Q-10-01'};
-exp_type = 'VE';
+exp_type = 'E';
 
 b = 0; % indexing variable
 while ~isempty(exp_name)
@@ -104,6 +105,13 @@ while ~isempty(exp_name)
     exp_name(1) = [];
 
 end
+
+% results.comp(1,:) = results.sg{1}.strain(64:12000) ./ results.lc{1}.stress(64:12000);
+% results.comp(2,:) = results.sg{2}.strain(64:12000) ./ results.lc{2}.stress(64:12000);
+% figure()
+% hold on
+% plot(log10(results.sg{1}.time(1:length(results.comp(1,:)))),results.comp(1,:))
+% plot(log10(results.sg{2}.time(1:length(results.comp(2,:)))),results.comp(2,:))
 disp('begin plotting')
 %% ------------------------------------------------------------------------
 %  ---- Plotting and output -----------------------------------------------
@@ -113,7 +121,18 @@ for k = 1:b
     plot(results.sg{k}.time, results.sg{k}.strain);
 end
 % plot(results.in{k}.time, results.in{k}.strain);
-xlabel('time [s]'), ylabel('% strain')
+xlabel('time [s]'), ylabel('Strain')
+% legend(legText, 'Location', 'NorthWest')
+set(gca, 'FontSize', 12)
+
+
+
+figure(), hold on
+for k = 1:b
+    plot(log10(results.sg{k}.time), results.sg{k}.strain);
+end
+% plot(results.in{k}.time, results.in{k}.strain);
+xlabel('log(t) [s]'), ylabel('Strain')
 % legend(legText, 'Location', 'NorthWest')
 set(gca, 'FontSize', 12)
 
@@ -121,21 +140,24 @@ figure(), hold on
 for k = 1:b
     plot(results.sg{k}.strain, results.lc{k}.stress)
 end
-% plot(results.in{k}.strain, results.in{k}.stress)
-
-figure()
-plot(results.lc{1}.time, results.lc{1}.stress)
+xlabel('Strain'), ylabel('Stress [MPa]')
+legend('Half Bridge', 'Quarter Bridge', 'Location', 'Southeast')
 slope = num2str(mean([m(1)]) / 1000);
 str = [slope, ' GPa'];
-text(0.4e-3, 9, str, 'FontSize', 12)
+text(0.1e-3, 13, str, 'FontSize', 12)
 
 slope = num2str(mean([m(2)])/1000);
 str = [slope, ' GPa'];
-text(0.8e-3, 7, str, 'FontSize', 12)
+text(0.45e-3, 7, str, 'FontSize', 12)
 xlabel('Strain'), ylabel('Stress')
 
 % slope = num2str(m(end)/1000);
 % str = [slope, ' GPa'];
 % text(0.85e-3, 12.5, str, 'FontSize', 12)
 % legend(legText, 'Location', 'SouthEast')
+set(gca, 'FontSize', 12)
+
+figure()
+plot(results.lc{1}.time, results.lc{1}.stress)
+xlabel('time [s]'), ylabel('Stress [MPa]')
 set(gca, 'FontSize', 12)

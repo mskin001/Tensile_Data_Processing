@@ -63,7 +63,7 @@ for k = 1:length(temps) -1
     ref_comp = [ref_comp; next_comp];
     
     hold on
-    loglog(ref_time, ref_comp, '-o', 'LineWidth', 1.5)
+%     loglog(ref_time, ref_comp, '-o', 'LineWidth', 1.5)
     loglog(next_time, next_comp, '-*', 'LineWidth', 1.5)
     loglog(shifted_time, next_comp, '-+', 'LineWidth', 1.5)
 end
