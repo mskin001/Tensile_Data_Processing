@@ -1,7 +1,7 @@
-lc_data = load('Load Cell 2.csv');
+lc_data = load('Load Cell 1.csv');
 lc_samp_rate = 10;
 lc_gain = 2100;
-mts_data = load('MTS810 LoadCell2.csv');
+mts_data = load('MTS810 LoadCell1.csv');
 mts_samp_rate = 10;
 
 
@@ -16,7 +16,7 @@ exp_start_time = find(abs(lc_avg_mv(1:50)) <=  mean(abs(lc_avg_mv(1:3))));
 lc_avg_mv(1:exp_start_time(end)) = [];
 lc_avg_mv = lc_avg_mv / lc_gain;
 
-lc_time = lc_data(exp_start_time(end)-10:lc_samp_rate:end,1);
+lc_time = lc_data(exp_start_time(end):lc_samp_rate:end,1);
 lc_time(1:exp_start_time(end)) = [];
 lc_time = lc_time - lc_time(1);
 
