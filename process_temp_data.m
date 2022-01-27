@@ -1,7 +1,11 @@
+% The raw temperature data must be in a csv file in the form
+% m,d,y,h,m,s,chA,Heater,chB. No spaces or characters; only int values in
+% the file.
+
 clear
 addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data'...
     '\Tensile Viscoelastic\VE']);
-raw_data = csvread('prelim_temp01_clean.txt');
+raw_data = csvread('prelim_temp02_clean.txt');
 month = raw_data(:,1);
 day = raw_data(:,2);
 year = raw_data(:,3);

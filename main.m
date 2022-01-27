@@ -62,7 +62,7 @@ while ~isempty(exp_name)
         exp_data = csvread(exp_file);
         lc_param = param_mat(exp_rows,:);
         sg_param{1} = lc_param;
-        sg_param{1}(1) = 0.25;
+        sg_param{1}(1) = 0.5;
         sg_param{2} = sg_param{1};
         sg_param{2}(1) = 0.5;
         
@@ -70,8 +70,14 @@ while ~isempty(exp_name)
         lc_data(:,2) = lc_data(:,2)./2100;
         lc_data(:,2) = lc_data(:,2).* 1.544e6 + 5.888; %converts voltage to load [N]. See load_cell_characterization.m
         
-        sg_data{1} = exp_data(:,5:6); % half bridge (time, voltage)
-        sg_data{2} = exp_data(:,3:4); % quarter bridge (time, volatge)
+        sg_data{2} = exp_data(:,5:6); % half bridge (time, voltage)
+        sg_data{1} = exp_data(:,3:4); % quarter bridge (time, volatge)
+        try
+            sg_data{3} = exp_data(:,7:8);
+            sg_param{3} = sg_param{2};
+        catch
+            continue
+        end
         rows = length(sg_data);
         
         
@@ -116,13 +122,18 @@ disp('begin plotting')
 %% ------------------------------------------------------------------------
 %  ---- Plotting and output -----------------------------------------------
 %  ------------------------------------------------------------------------
+marker = ['*', 'o', '^'];
+
 figure(), hold on
 for k = 1:b
-    plot(results.sg{k}.time, results.sg{k}.strain);
+    plot(results.sg{k}.time, results.sg{k}.strain, ['-', marker(k)], 'MarkerIndices',...
+        1:1000:length(results.sg{k}.time),  'Linewidth', 2);
 end
 % plot(results.in{k}.time, results.in{k}.strain);
 xlabel('time [s]'), ylabel('Strain')
 % legend(legText, 'Location', 'NorthWest')
+legend('SG1', 'SG2', 'SG3')
+grid on
 set(gca, 'FontSize', 12)
 
 
