@@ -3,9 +3,12 @@
 % the file.
 
 clear
+% addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data'...
+%     '\Tensile Viscoelastic\VE']);
 addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data'...
     '\Tensile Viscoelastic\VE']);
-raw_data = csvread('prelim_temp02_clean.txt');
+
+raw_data = csvread('prelim_temp03_clean.txt');
 month = raw_data(:,1);
 day = raw_data(:,2);
 year = raw_data(:,3);
@@ -42,18 +45,22 @@ off_set = heat - chA;
 figure(1), hold on
 plot(elapsed_time,heat)
 plot(elapsed_time,chA)
-plot(elapsed_time,chB)
+% plot(elapsed_time,chB)
 
 xlabel('Duration [min]')
 ylabel('Temperature [^oC]')
-legend('Heater', 'Specimen Outside', 'Specimen Inside', 'Location', 'Southeast')
+grid on
+legend('Set Temp', 'Surface Temp', 'Location', 'Southeast')
+set(gca, 'FontSize', 12)
 
 figure(2), hold on
 plot(elapsed_time(1:end),dAdt_mean)
-plot(elapsed_time(1:end),dBdt_mean)
+% plot(elapsed_time(1:end),dBdt_mean)
 
 xlabel('Duration [min]')
-ylabel('Temperature change [T_2 - T_1]')
+ylabel('Set Temp - Surface Temp')
+grid on
+set(gca, 'FontSize', 12)
 
 figure(3), hold on
 plot(elapsed_time,off_set)
