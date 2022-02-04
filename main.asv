@@ -5,7 +5,7 @@ clear, close all
 addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data'...
     '\Tensile Viscoelastic'])
 
-exp_name = {'GF09-01'};
+exp_name = {'GF08-01' 'GF08-01'};
 legText = {'H-05-01', 'Q-05-01', 'H-05-02', 'Q-05-02', 'H-08-01', 'Q-08-01', 'H-09-01',...
   'Q-09-01', 'H-10-01', 'Q-10-01'};
 exp_type = 'E';

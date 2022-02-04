@@ -34,11 +34,11 @@ dAdt_mean = movmean(dAdt,12);
 dBdt_mean = movmean(dBdt,12);
 dur = minutes(elapsed_time);
 
-[fitresult, gof] = mean_bestfit(dur, dAdt_mean');
-x = linspace(1,dur(end),length(dur));
-y = fitresult.a .* exp(fitresult.b .* x) + fitresult.c .* exp(fitresult.d .* x);
-
-ind = find(y >= -0.005, 1, 'first');
+% [fitresult, gof] = mean_bestfit(dur, dAdt_mean');
+% x = linspace(1,dur(end),length(dur));
+% y = fitresult.a .* exp(fitresult.b .* x) + fitresult.c .* exp(fitresult.d .* x);
+% 
+% ind = find(y >= -0.005, 1, 'first');
 
 off_set = heat - chA;
 
@@ -58,9 +58,13 @@ plot(elapsed_time(1:end),dAdt_mean)
 % plot(elapsed_time(1:end),dBdt_mean)
 
 xlabel('Duration [min]')
-ylabel('Set Temp - Surface Temp')
+ylabel('d{T_s}/dt')
 grid on
 set(gca, 'FontSize', 12)
 
 figure(3), hold on
 plot(elapsed_time,off_set)
+xlabel('Duration [min]')
+ylabel('Set Temp - Surface Temp')
+grid on
+set(gca, 'FontSize', 12)
