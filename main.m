@@ -68,7 +68,7 @@ while ~isempty(exp_name)
         
         lc_data = exp_data(:,1:2); % load cell (time, voltage)
         lc_data(:,2) = lc_data(:,2)./2100;
-        lc_data(:,2) = lc_data(:,2).* 1.544e6 + 5.888; %converts voltage to load [N]. See load_cell_characterization.m
+        lc_data(:,2) = lc_data(:,2).* 1.401e6 + 5.888; %converts voltage to load [N]. See load_cell_characterization.m
         
         sg_data{2} = exp_data(:,5:6); % half bridge (time, voltage)
         sg_data{1} = exp_data(:,3:4); % quarter bridge (time, volatge)
