@@ -9,13 +9,13 @@ end
 
 sg_temp = reshape(sg_data(:,2),[sg_param(end),length(sg_data(:,2))/sg_param(end)]);
 sg_avg_mv = mean(sg_temp,1)';
-% exp_start_time = find(abs(sg_avg_mv(1:50)) <=  mean(abs(sg_avg_mv(1:3))));
-% sg_avg_mv(1:exp_start_time(end)) = [];
+exp_start_time = find(abs(sg_avg_mv(1:50)) <=  mean(abs(sg_avg_mv(1:3))));
+sg_avg_mv(1:exp_start_time(end)) = [];
 sg_avg_mv = sg_avg_mv / sg_param(5);
 
 sg_time = sg_data(1:sg_param(end):end,1);
-% sg_time(1:exp_start_time(end)) = [];
-% sg_time = sg_time - sg_time(1);
+sg_time(1:exp_start_time(end)) = [];
+sg_time = sg_time - sg_time(1);
 
 test = mod(length(instron_data(:,end)),instron_param(end));
 if ~test == 0
