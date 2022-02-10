@@ -1,13 +1,12 @@
 clear, close all
 
-% addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data\'...
-%     'Tensile Viscoelastic'])
-addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data'...
-    '\Tensile Viscoelastic'])
+addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data\'...
+    'Tensile Viscoelastic'])
+% addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data'...
+%     '\Tensile Viscoelastic'])
 
-exp_name = {'GF09-01'};
-legText = {'H-05-01', 'Q-05-01', 'H-05-02', 'Q-05-02', 'H-08-01', 'Q-08-01', 'H-09-01',...
-  'Q-09-01', 'H-10-01', 'Q-10-01'};
+exp_name = {'GF08-01' 'GF09-01'};
+legText = {'GF08-01-Half', 'GF08-01-Quarter', 'GF09-01-Half', 'GF09-01-Quarter'};
 exp_type = 'E';
 
 b = 0; % indexing variable
@@ -35,11 +34,11 @@ while ~isempty(exp_name)
     %  ------------------------------------------------------------------------
     % Necessary with SG data and LC data is not in the same csv. Happens
     % when using the Instron/MTS machine
-%         addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data\'...
-%         'Tensile Viscoelastic\Tensile tests\Data CSV'])
+        addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data\'...
+        'Tensile Viscoelastic\Tensile tests\Data CSV'])
 
-        addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\'...
-            'Experimental Data\Tensile Viscoelastic\Tensile tests\Data CSV'])
+%         addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\'...
+%             'Experimental Data\Tensile Viscoelastic\Tensile tests\Data CSV'])
         lc_row = exp_rows(strcmp('LC', exp_list{2}(exp_rows)));
         lc_file = [exp_list{3}{lc_row}, '.csv'];
         lc_data = csvread(lc_file, 2, 0); % starts at A3
@@ -60,11 +59,11 @@ while ~isempty(exp_name)
     %  ---- Parse Data --------------------------------------------------------
     %  ------------------------------------------------------------------------
     % When all data is in the same file from the VE test platform.
-%         addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data\'...
-%         'Tensile Viscoelastic\VE'])
+        addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data\'...
+        'Tensile Viscoelastic\VE'])
         
-        addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\'...
-            'Experimental Data\Tensile Viscoelastic\VE'])
+%         addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\'...
+%             'Experimental Data\Tensile Viscoelastic\VE'])
         exp_file = [exp_list{3}{exp_rows}, '.csv'];
         exp_data = csvread(exp_file);
         lc_param = param_mat(exp_rows,:);
@@ -129,17 +128,18 @@ disp('begin plotting')
 %% ------------------------------------------------------------------------
 %  ---- Plotting and output -----------------------------------------------
 %  ------------------------------------------------------------------------
-marker = ['*', 'o', '^', '+'];
+marker = ['s', '*', 'o', '+', '^', 'v', 'd'];
+line = {'--', '-', ':', '-.', };
 
 figure(), hold on
 for k = 1:b
-    plot(results.sg{k}.time, results.sg{k}.strain, ['-', marker(k)], 'MarkerIndices',...
-        1:1000:length(results.sg{k}.time),  'Linewidth', 2);
+    plot(results.sg{k}.time, results.sg{k}.strain, [line{1+mod(k,4)},marker(1+mod(k,7))]...
+        , 'MarkerIndices', 1:100:length(results.sg{k}.time), 'Linewidth', 2);
 end
 % plot(results.in{k}.time, results.in{k}.strain);
 xlabel('time [s]'), ylabel('Strain')
-% legend(legText, 'Location', 'NorthWest')
-legend('SG1', 'SG2', 'SG3')
+legend(legText, 'Location', 'NorthWest')
+% legend('SG1', 'SG2', 'SG3')
 grid on
 set(gca, 'FontSize', 12)
 
@@ -147,35 +147,28 @@ set(gca, 'FontSize', 12)
 
 figure(), hold on
 for k = 1:b
-    plot(log10(results.sg{k}.time), results.sg{k}.strain);
+    plot(log10(results.sg{k}.time), results.sg{k}.strain, [line{1+mod(k,4)},marker(1+mod(k,7))]...
+        , 'MarkerIndices', 1:100:length(results.sg{k}.time), 'Linewidth', 2);
 end
 % plot(results.in{k}.time, results.in{k}.strain);
 xlabel('log(t) [s]'), ylabel('Strain')
-% legend(legText, 'Location', 'NorthWest')
+legend(legText, 'Location', 'NorthWest')
+grid on
 set(gca, 'FontSize', 12)
 
 figure(), hold on
 for k = 1:b
-    plot(results.sg{k}.strain, results.lc{k}.stress)
+    plot(results.sg{k}.strain, results.lc{k}.stress, [line{1+mod(k,4)},marker(1+mod(k,7))]...
+        , 'MarkerIndices', 1:100:length(results.sg{k}.time), 'Linewidth', 2);
 end
 xlabel('Strain'), ylabel('Stress [MPa]')
-legend('Half Bridge', 'Quarter Bridge', 'Location', 'Southeast')
-slope = num2str(mean([m(1)]) / 1000);
-str = [slope, ' GPa'];
-text(0.1e-3, 13, str, 'FontSize', 12)
-
-slope = num2str(mean([m(2)])/1000);
-str = [slope, ' GPa'];
-text(0.45e-3, 7, str, 'FontSize', 12)
-xlabel('Strain'), ylabel('Stress')
-
-% slope = num2str(m(end)/1000);
-% str = [slope, ' GPa'];
-% text(0.85e-3, 12.5, str, 'FontSize', 12)
-% legend(legText, 'Location', 'SouthEast')
+% legend('Half Bridge', 'Quarter Bridge', 'Location', 'Southeast')
+legend(legText, 'Location', 'SouthEast')
+grid on
 set(gca, 'FontSize', 12)
 
 figure()
 plot(results.lc{1}.time, results.lc{1}.stress, 'Linewidth', 2)
 xlabel('time [s]'), ylabel('Stress [MPa]')
+grid on;
 set(gca, 'FontSize', 12)
