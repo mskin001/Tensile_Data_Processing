@@ -5,8 +5,8 @@ addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data\'...
 % addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data'...
 %     '\Tensile Viscoelastic'])
 
-exp_name = {'GF08-01' 'GF09-01'};
-legText = {'GF08-01-Half', 'GF08-01-Quarter', 'GF09-01-Half', 'GF09-01-Quarter'};
+exp_name = {'GF08-01'};
+legText = {'GF08-01-Half', 'GF08-01-Quarter'};
 exp_type = 'E';
 
 b = 0; % indexing variable
