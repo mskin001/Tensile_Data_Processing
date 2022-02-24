@@ -4,7 +4,7 @@ function [comp] = clean_data(results)
 % remove outliers
 str_markers = [63, 1.254e4, 4078, 1.177e4];
 
-load('results_test.mat');
+load('prelim_test_6.mat');
 % allocate variables
 time = results.lc{1}.time;
 lc = results.lc{1}.stress;

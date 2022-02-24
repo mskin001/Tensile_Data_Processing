@@ -5,9 +5,13 @@ addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data\'...
 % addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data'...
 %     '\Tensile Viscoelastic'])
 
-exp_name = {'GF08-01'};
-legText = {'GF08-01-Half', 'GF08-01-Quarter'};
-exp_type = 'E';
+exp_name = {'GF11-01-Prelim'};
+avg_res = true;
+
+legText = {'SG1', 'SG2', 'SG3'};
+marker_step = 1000;
+
+exp_type = 'VE';
 
 b = 0; % indexing variable
 while ~isempty(exp_name)
@@ -76,13 +80,13 @@ while ~isempty(exp_name)
         lc_data(:,2) = lc_data(:,2)./2100;
         lc_data(:,2) = lc_data(:,2).* 1.401e6 + 5.888; %converts voltage to load [N]. See load_cell_characterization.m
         
-        sg_data{2} = exp_data(:,5:6); % half bridge (time, voltage)
-        sg_data{1} = exp_data(:,3:4); % quarter bridge (time, volatge)
+        sg_data{1} = exp_data(:,3:4);
+        sg_data{2} = exp_data(:,5:6);
         try
             sg_data{3} = exp_data(:,7:8);
             sg_param{3} = sg_param{2};
         catch
-            continue
+            % do nothing
         end
         rows = length(sg_data);
         
@@ -98,7 +102,16 @@ while ~isempty(exp_name)
         %geometric area when winding parameters not available
         eff_area = pi * (samp_param(2)^2 - samp_param(1)^2) / 4; % sample cross section area
     end
-
+    
+    if avg_res
+        for k = 1:3
+            str_data(:,k) = sg_data{k}(:,2);
+        end
+        str_data = mean(str_data,2);
+        str_time = sg_data{1}(:,1);
+        sg_data = {[str_time,str_data]};
+        rows = 1;
+    end
     for k = 1:rows
         % Process Instron and strain gauge data
         [results.lc{k+b}, results.sg{k+b}] = process_data...
@@ -118,12 +131,7 @@ while ~isempty(exp_name)
 
 end
 
-% results.comp(1,:) = results.sg{1}.strain(64:12000) ./ results.lc{1}.stress(64:12000);
-% results.comp(2,:) = results.sg{2}.strain(64:12000) ./ results.lc{2}.stress(64:12000);
-% figure()
-% hold on
-% plot(log10(results.sg{1}.time(1:length(results.comp(1,:)))),results.comp(1,:))
-% plot(log10(results.sg{2}.time(1:length(results.comp(2,:)))),results.comp(2,:))
+
 disp('begin plotting')
 %% ------------------------------------------------------------------------
 %  ---- Plotting and output -----------------------------------------------
@@ -134,7 +142,7 @@ line = {'--', '-', ':', '-.', };
 figure(), hold on
 for k = 1:b
     plot(results.sg{k}.time, results.sg{k}.strain, [line{1+mod(k,4)},marker(1+mod(k,7))]...
-        , 'MarkerIndices', 1:100:length(results.sg{k}.time), 'Linewidth', 2);
+        , 'MarkerIndices', 1:marker_step:length(results.sg{k}.time), 'Linewidth', 2);
 end
 % plot(results.in{k}.time, results.in{k}.strain);
 xlabel('time [s]'), ylabel('Strain')
@@ -148,7 +156,7 @@ set(gca, 'FontSize', 12)
 figure(), hold on
 for k = 1:b
     plot(log10(results.sg{k}.time), results.sg{k}.strain, [line{1+mod(k,4)},marker(1+mod(k,7))]...
-        , 'MarkerIndices', 1:100:length(results.sg{k}.time), 'Linewidth', 2);
+        , 'MarkerIndices', 1:marker_step:length(results.sg{k}.time), 'Linewidth', 2);
 end
 % plot(results.in{k}.time, results.in{k}.strain);
 xlabel('log(t) [s]'), ylabel('Strain')
@@ -159,7 +167,7 @@ set(gca, 'FontSize', 12)
 figure(), hold on
 for k = 1:b
     plot(results.sg{k}.strain, results.lc{k}.stress, [line{1+mod(k,4)},marker(1+mod(k,7))]...
-        , 'MarkerIndices', 1:100:length(results.sg{k}.time), 'Linewidth', 2);
+        , 'MarkerIndices', 1:marker_step:length(results.sg{k}.time), 'Linewidth', 2);
 end
 xlabel('Strain'), ylabel('Stress [MPa]')
 % legend('Half Bridge', 'Quarter Bridge', 'Location', 'Southeast')

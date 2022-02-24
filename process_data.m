@@ -25,12 +25,15 @@ end
 in_temp = reshape(instron_data(:,end),[instron_param(end),...
   length(instron_data(:,end))/instron_param(end)]);
 in_avg_load = mean(in_temp,1)';
+in_avg_load(1:exp_start_time(end)) = [];
 
 in_ext = reshape(instron_data(:,2),[instron_param(end),...
   length(instron_data(:,2))/instron_param(end)]);
 in_avg_ext = mean(in_ext,1);
+in_avg_ext(1:exp_start_time(end)) = [];
 
 in_time = instron_data(1:instron_param(end):end,1);
+in_time(1:exp_start_time(end)) = [];
 in_time = in_time - in_time(1);
 
 %% ------------------------------------------------------------------------
