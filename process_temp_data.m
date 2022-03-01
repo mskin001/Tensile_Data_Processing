@@ -8,7 +8,7 @@ clear
 addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data'...
     '\Tensile Viscoelastic\VE']);
 
-raw_data = csvread('prelim_temp03_clean.txt');
+raw_data = csvread('cte-GF03-11_clean.txt');
 month = raw_data(:,1);
 day = raw_data(:,2);
 year = raw_data(:,3);
