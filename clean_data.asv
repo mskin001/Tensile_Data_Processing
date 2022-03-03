@@ -2,9 +2,9 @@ function [comp] = clean_data(results)
 % the time (t) for key points: load applied, load removed, begin average
 % time, end average time. Average time is used to find the average load and
 % remove outliers
-str_markers = [2114, 3921, 2141, 3883;
-                1.453e4, 1.589e4, 1.426e4, 1.577e4;
-                2.66e4, 2.79e4, 2.622e4, 2.79e4];
+str_markers = [2064, 3921, 2191, 3883;
+                1.403e4, 1.589e4, 1.426e4, 1.577e4;
+                2.61e4, 2.79e4, 2.622e4, 2.79e4];
             
 [rows, cols] = size(str_markers);
 
@@ -28,9 +28,7 @@ for b = 1:rows
     tf = isoutlier(lc_str);
     lc_str(tf) = str_avg;
 
-
-    comp{b} = sg(str_markers(b,1):str_markers(b,2))./lc_str;
-
+    comp{b} = sg(str_markers(b,1):str_markers(b,2),k)./lc_str;
 end
 
 % avg_comp = mean(comp,2)';
