@@ -5,7 +5,7 @@ addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data\'...
 % addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data'...
 %     '\Tensile Viscoelastic'])
 
-exp_name = {'GF11-01'};
+exp_name = {'GF11-02'};
 avg_res = true;
 
 legText = {'SG1', 'SG2', 'SG3'};

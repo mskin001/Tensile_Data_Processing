@@ -2,13 +2,13 @@ function [comp] = clean_data(results)
 % the time (t) for key points: load applied, load removed, begin average
 % time, end average time. Average time is used to find the average load and
 % remove outliers
-str_markers = [2114, 3921, 2141, 3883;
-                1.453e4, 1.589e4, 1.426e4, 1.577e4;
-                2.66e4, 2.79e4, 2.622e4, 2.79e4];
+str_markers = [2235, 4396, 2298, 4343;
+                1.358e4, 1.547e4, 1.372e4, 1.538e4;
+                2.485e4, 2.666e4, 2.49e4, 2.663e4];
             
 [rows, cols] = size(str_markers);
 
-load('prelim7_results.mat');
+load('GF11-02-results');
 % allocate variables
 time = results.lc{1}.time;
 lc = results.lc{1}.stress;
