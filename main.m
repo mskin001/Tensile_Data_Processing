@@ -5,7 +5,7 @@ addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data\'...
 % addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data'...
 %     '\Tensile Viscoelastic'])
 
-exp_name = {'GF11-02'};
+exp_name = {'GF11-03-cte'};
 avg_res = true;
 
 legText = {'SG1', 'SG2', 'SG3'};
@@ -141,11 +141,11 @@ line = {'--', '-', ':', '-.', };
 
 figure(), hold on
 for k = 1:b
-    plot(results.sg{k}.time, results.sg{k}.strain, [line{1+mod(k,4)},marker(1+mod(k,7))]...
+    plot(results.sg{k}.time/60, results.sg{k}.strain, [line{1+mod(k,4)},marker(1+mod(k,7))]...
         , 'MarkerIndices', 1:marker_step:length(results.sg{k}.time), 'Linewidth', 2);
 end
 % plot(results.in{k}.time, results.in{k}.strain);
-xlabel('time [s]'), ylabel('Strain')
+xlabel('time [min]'), ylabel('Strain')
 legend(legText, 'Location', 'NorthWest')
 % legend('SG1', 'SG2', 'SG3')
 grid on
@@ -153,16 +153,16 @@ set(gca, 'FontSize', 12)
 
 
 
-figure(), hold on
-for k = 1:b
-    plot(log10(results.sg{k}.time), results.sg{k}.strain, [line{1+mod(k,4)},marker(1+mod(k,7))]...
-        , 'MarkerIndices', 1:marker_step:length(results.sg{k}.time), 'Linewidth', 2);
-end
-% plot(results.in{k}.time, results.in{k}.strain);
-xlabel('log(t) [s]'), ylabel('Strain')
-legend(legText, 'Location', 'NorthWest')
-grid on
-set(gca, 'FontSize', 12)
+% figure(), hold on
+% for k = 1:b
+%     plot(log10(results.sg{k}.time), results.sg{k}.strain, [line{1+mod(k,4)},marker(1+mod(k,7))]...
+%         , 'MarkerIndices', 1:marker_step:length(results.sg{k}.time), 'Linewidth', 2);
+% end
+% % plot(results.in{k}.time, results.in{k}.strain);
+% xlabel('log(t) [s]'), ylabel('Strain')
+% legend(legText, 'Location', 'NorthWest')
+% grid on
+% set(gca, 'FontSize', 12)
 
 figure(), hold on
 for k = 1:b

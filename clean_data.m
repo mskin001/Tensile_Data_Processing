@@ -2,10 +2,12 @@ function [comp] = clean_data(results)
 % the time (t) for key points: load applied, load removed, begin average
 % time, end average time. Average time is used to find the average load and
 % remove outliers
+% str_markers = [2261, 4113, 2402, 4021;
+%                 1.407e4, 1.591e4, 1.42e4, 1.582e4;
+%                 2.381e4, 2.566e4, 2.392e4, 2.555e4];
 str_markers = [2235, 4396, 2298, 4343;
                 1.358e4, 1.547e4, 1.372e4, 1.538e4;
-                2.485e4, 2.666e4, 2.49e4, 2.663e4];
-            
+                2.485e4, 2.669e4, 2.49e4, 2.663e4];
 [rows, cols] = size(str_markers);
 
 load('GF11-02-results');

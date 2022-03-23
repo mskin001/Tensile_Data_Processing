@@ -8,7 +8,7 @@ clear
 addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data'...
     '\Tensile Viscoelastic\VE']);
 
-raw_data = csvread('cte-GF03-11_clean.txt');
+raw_data = csvread('GF11-03-cte.txt');
 month = raw_data(:,1);
 day = raw_data(:,2);
 year = raw_data(:,3);
@@ -42,9 +42,9 @@ dur = minutes(elapsed_time);
 
 off_set = heat - chA;
 
-figure(1), hold on
-plot(elapsed_time,heat)
-plot(elapsed_time,chA)
+figure(), hold on
+plot(elapsed_time,heat, 'Linewidth', 2)
+plot(elapsed_time,chA, 'Linewidth', 2)
 % plot(elapsed_time,chB)
 
 xlabel('Duration [min]')
@@ -53,7 +53,7 @@ grid on
 legend('Set Temp', 'Surface Temp', 'Location', 'Southeast')
 set(gca, 'FontSize', 12)
 
-figure(2), hold on
+figure(), hold on
 plot(elapsed_time(1:end),dAdt_mean)
 % plot(elapsed_time(1:end),dBdt_mean)
 
