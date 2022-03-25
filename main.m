@@ -1,14 +1,15 @@
-clear, close all
+clear %, close all
 
 addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data\'...
     'Tensile Viscoelastic'])
 % addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data'...
 %     '\Tensile Viscoelastic'])
 
-exp_name = {'GF11-03-cte'};
+exp_name = {'GF11-02'};
 avg_res = true;
 
-legText = {'SG1', 'SG2', 'SG3'};
+% legText = {'SG1', 'SG2', 'SG3'};
+legText = {'GF11-01', 'GF11-02', 'GF12-01'};
 marker_step = 1000;
 
 exp_type = 'VE';
@@ -139,7 +140,7 @@ disp('begin plotting')
 marker = ['s', '*', 'o', '+', '^', 'v', 'd'];
 line = {'--', '-', ':', '-.', };
 
-figure(), hold on
+figure(1), hold on
 for k = 1:b
     plot(results.sg{k}.time/60, results.sg{k}.strain, [line{1+mod(k,4)},marker(1+mod(k,7))]...
         , 'MarkerIndices', 1:marker_step:length(results.sg{k}.time), 'Linewidth', 2);
