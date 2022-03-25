@@ -6,10 +6,10 @@ addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data\'...
 %     '\Tensile Viscoelastic'])
 
 exp_name = {'GF11-02'};
-avg_res = true;
+avg_res = false;
 
-% legText = {'SG1', 'SG2', 'SG3'};
-legText = {'GF11-01', 'GF11-02', 'GF12-01'};
+legText = {'SG1', 'SG2', 'SG3'};
+% legText = {'GF11-01', 'GF11-02', 'GF12-01'};
 marker_step = 1000;
 
 exp_type = 'VE';
