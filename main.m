@@ -1,4 +1,4 @@
-clear %, close all
+clear, close all
 
 addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data\'...
     'Tensile Viscoelastic'])
@@ -6,7 +6,7 @@ addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data\'...
 %     '\Tensile Viscoelastic'])
 
 exp_name = {'GF11-02'};
-avg_res = false;
+avg_res = true;
 
 legText = {'SG1', 'SG2', 'SG3'};
 % legText = {'GF11-01', 'GF11-02', 'GF12-01'};
@@ -54,7 +54,7 @@ while ~isempty(exp_name)
 
         for k = 1:rows
             sg_file = [exp_list{3}{sg_row(k)}, '.csv'];
-            sg_data{k+b} = csvread(sg_file, 10, 0); %starts at A11
+            sg_data{k+b} = csvread(sg_file, 1, 0); %starts at A11
             sg_param{k+b} = param_mat(sg_row(k),:); % param order is the column names in exp_list starting at C5.
             %Bridge_type, Direction, Gauge_length, Gauge_factor, Gain, Input_voltage,
             %Volume_fraction, Sample rate
@@ -73,9 +73,9 @@ while ~isempty(exp_name)
         exp_data = csvread(exp_file);
         lc_param = param_mat(exp_rows,:);
         sg_param{1} = lc_param;
-        sg_param{1}(1) = 0.5;
+        sg_param{1}(1) = 0.25;
         sg_param{2} = sg_param{1};
-        sg_param{2}(1) = 0.5;
+        sg_param{2}(1) = 0.25;
         
         lc_data = exp_data(:,1:2); % load cell (time, voltage)
         lc_data(:,2) = lc_data(:,2)./2100;
