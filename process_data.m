@@ -46,8 +46,8 @@ in_strain = in_avg_ext / sg_param(3);
 if sg_param(1) == 0.25
   % Quarter bridge. Assumes lead resistance of the wires is 0. Always
   % positive.
-  V_r = (sg_avg_mv) / (sg_param(6)); % - mean(sg_avg_mv(1:3))
-  sg_strain = abs((-4 .* V_r) ./ (sg_param(4).*(1 + 2.*V_r)));
+  V_r = (sg_avg_mv - mean(sg_avg_mv(1:3))) / (sg_param(6)); % - mean(sg_avg_mv(1:3))
+  sg_strain = abs((-4 .* V_r) ./ (sg_param(4).*(1 + 2.*V_r))*1.085);
 elseif sg_param(1) == 0.5
   % half bridge equation
   V_r = (sg_avg_mv - mean(sg_avg_mv(1:3))) / (sg_param(6));
