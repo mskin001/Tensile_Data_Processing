@@ -54,7 +54,7 @@ while ~isempty(exp_name)
 
         for k = 1:rows
             sg_file = [exp_list{3}{sg_row(k)}, '.csv'];
-            sg_data{k+b} = csvread(sg_file, 1, 0); %starts at A11
+            sg_data{k+b} = csvread(sg_file, 10, 0); %starts at A11
             sg_param{k+b} = param_mat(sg_row(k),:); % param order is the column names in exp_list starting at C5.
             %Bridge_type, Direction, Gauge_length, Gauge_factor, Gain, Input_voltage,
             %Volume_fraction, Sample rate
