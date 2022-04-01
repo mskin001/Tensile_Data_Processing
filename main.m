@@ -142,7 +142,7 @@ line = {'--', '-', ':', '-.', };
 
 figure(1), hold on
 for k = 1:b
-    plot(results.sg{k}.time/60, results.sg{k}.strain, [line{1+mod(k,4)},marker(1+mod(k,7))]...
+    plot(results.sg{k}.time, results.sg{k}.strain, [line{1+mod(k,4)},marker(1+mod(k,7))]...
         , 'MarkerIndices', 1:marker_step:length(results.sg{k}.time), 'Linewidth', 2);
 end
 % plot(results.in{k}.time, results.in{k}.strain);
