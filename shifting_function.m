@@ -30,7 +30,7 @@ xlabel('log_{10}(t) [min]')
 ylabel('Compliance [1/GPa]')
 set(gca, 'Fontsize', 12)
 
-times = raw_times;
+times = log10(raw_times);
 comp = log10(raw_comp);
 ref_time = times(:,1);
 ref_comp = comp(:,1);
@@ -67,7 +67,6 @@ for k = 1:length(temps) -1
     loglog(next_time, next_comp, '-*', 'LineWidth', 1.5)
     loglog(shifted_time, next_comp, '-+', 'LineWidth', 1.5)
 end
-figure(2)
 xlabel('log(t) [min]')
 ylabel('log(D) [1/GPa]')
 
