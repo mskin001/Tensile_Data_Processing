@@ -112,7 +112,7 @@ plot(fit_time,10.^fit_comp, '-', 'Linewidth', 1.5)
 grid on
 set(gca, 'Fontsize', 12)
 xlabel('log_{10}(t) [min]')
-ylabel('Compliance [1/GPa]')
+ylabel('Compliance [1/Pa]')
 legend({'Shifted Curves', '30^oC', '45^oC', '60^oC', 'Master Curve'},...
     'Location', 'southeast')
 
