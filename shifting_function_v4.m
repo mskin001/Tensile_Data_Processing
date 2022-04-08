@@ -75,7 +75,7 @@ for k = 1:length(temps)
 end
 grid on
 set(gca, 'Fontsize', 12)
-xlabel('log_{10}(t) [min]')
+xlabel('log_{10}(t) [s]')
 ylabel('Compliance [1/GPa]')
 legend({'Master Curve', '40^oC', '50^oC', '60^oC', '70^oC', })
 

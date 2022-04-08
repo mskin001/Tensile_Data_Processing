@@ -5,7 +5,7 @@ addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data\'...
 % addpath(['H:\My Drive\FESS Student Projects\Miles Skinner\Experimental Data'...
 %     '\Tensile Viscoelastic'])
 
-exp_name = {'GF12-02-CTE'};
+exp_name = {'GF12-01'};
 avg_res = true;
 
 legText = {'SG1', 'SG2', 'SG3'};
@@ -146,7 +146,7 @@ for k = 1:b
         , 'MarkerIndices', 1:marker_step:length(results.sg{k}.time), 'Linewidth', 2);
 end
 % plot(results.in{k}.time, results.in{k}.strain);
-xlabel('time [min]'), ylabel('Strain')
+xlabel('time [s]'), ylabel('Strain')
 legend(legText, 'Location', 'NorthWest')
 % legend('SG1', 'SG2', 'SG3')
 grid on
