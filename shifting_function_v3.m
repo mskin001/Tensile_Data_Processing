@@ -2,10 +2,10 @@ clear
 close all
 % Shifting algorithm is from "The closed form t-T-P shifting (CFS)
 % algorithm" by M. Gergesova, B. Zupancic, I. Saprunov, and I. Emri
-comp = load('GF12-01-comp-test');
-comp = comp.comp;
-exp_time = load('GF12-01-rt-test');
-exp_time = exp_time.ref_time;
+comp = load('avg_comp');
+comp = comp.avg_comp;
+exp_time = load('avg_time');
+exp_time = exp_time.avg_time;
 temps = [35, 45, 60]; % temp in degC
 tref = temps(1);
 % 
@@ -21,14 +21,14 @@ set(gca, 'Fontsize', 12)
 
 % times = raw_times;
 % comp = log10(raw_comp);
-ref_time = log10(exp_time{1}(3:end));
-ref_comp = log10(comp{1}(3:end));
-
+ref_time = log10(exp_time{1}(3:end))';
+ref_comp = log10(comp{1}(3:end))';
+best_fit_exten = 100000;
 % figure(), hold on, grid on
 for k = 1:length(temps) -1
 % find overlab region
-    next_time = log10(exp_time{k+1}(3:end));
-    next_comp = log10(comp{k+1}(3:end));
+    next_time = log10(exp_time{k+1}(3:end))';
+    next_comp = log10(comp{k+1}(3:end))';
 %     hold on
 %     plot(ref_time,ref_comp)
 %     plot(next_time, next_comp)
@@ -53,10 +53,10 @@ for k = 1:length(temps) -1
         log_shift_factor = nan;
     end
     
-    if isnan(log_shift_factor) || isinf(log_shift_factor)
+    while isnan(log_shift_factor) || isinf(log_shift_factor)
         [fitresult, ~] = ref_best_fit(ref_time(3:end), ref_comp(3:end));
         time = ref_time;
-        time_ext = log10(linspace(10^ref_time(end),10^ref_time(end)+100000,100000));
+        time_ext = log10(linspace(10^ref_time(end),10^ref_time(end)+best_fit_exten,best_fit_exten));
         time(end+1:end+length(time_ext)) = time_ext;
         comp_ext = fitresult.a .* time.^(fitresult.b) + fitresult.c;
         plot(time,comp_ext)
@@ -79,6 +79,7 @@ for k = 1:length(temps) -1
         b = sum((0.5 * (U(2:end,1) + U(1:end-1,1))) .* (U(2:end,2) - U(1:end-1,2)));
 
         log_shift_factor = (A - b) / (L(end,2) - U(1,2));
+        best_fit_exten = best_fit_exten*100
     end
         
     shift_factor = 10^(log_shift_factor);
@@ -111,7 +112,7 @@ end
 plot(fit_time,10.^fit_comp, '-', 'Linewidth', 1.5)
 grid on
 set(gca, 'Fontsize', 12)
-xlabel('log_{10}(t) [min]')
+xlabel('log_{10}(t) [sec]')
 ylabel('Compliance [1/Pa]')
 legend({'Shifted Curves', '30^oC', '45^oC', '60^oC', 'Master Curve'},...
     'Location', 'southeast')
