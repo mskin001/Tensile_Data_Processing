@@ -27,12 +27,12 @@ opts.StartPoint = [5.97246509796005e-11 0.00231284265145931 3.45026055953433e-16
 [fitresult, gof] = fit( xData, yData, ft, opts );
 % 
 % Plot fit with data.
-figure( 'Name', 'ref_best_fit' );
-h = plot( fitresult, xData, yData );
-legend( h, 'ref_comp vs. ref_time', 'ref_best_fit', 'Location', 'NorthEast' );
-% Label axes
-xlabel ref_time
-ylabel ref_comp
-grid on
+% figure( 'Name', 'ref_best_fit' );
+% h = plot( fitresult, xData, yData );
+% legend( h, 'ref_comp vs. ref_time', 'ref_best_fit', 'Location', 'NorthEast' );
+% % Label axes
+% xlabel ref_time
+% ylabel ref_comp
+% grid on
 
 

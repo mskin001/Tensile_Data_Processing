@@ -7,6 +7,7 @@ comp = comp.avg_comp;
 exp_time = load('avg_time');
 exp_time = exp_time.avg_time;
 temps = [35, 45, 60]; % temp in degC
+beg_lin_resp = [3, 3, 50];
 tref = temps(1);
 % 
 figure()
@@ -21,14 +22,14 @@ set(gca, 'Fontsize', 12)
 
 % times = raw_times;
 % comp = log10(raw_comp);
-ref_time = log10(exp_time{1}(3:end))';
-ref_comp = log10(comp{1}(3:end))';
+ref_time = log10(exp_time{1}(beg_lin_resp(1):end))';
+ref_comp = log10(comp{1}(beg_lin_resp(1):end))';
 best_fit_exten = 100000;
 % figure(), hold on, grid on
 for k = 1:length(temps) -1
 % find overlab region
-    next_time = log10(exp_time{k+1}(3:end))';
-    next_comp = log10(comp{k+1}(3:end))';
+    next_time = log10(exp_time{k+1}(beg_lin_resp(k+1):end))';
+    next_comp = log10(comp{k+1}(beg_lin_resp(k+1):end))';
 %     hold on
 %     plot(ref_time,ref_comp)
 %     plot(next_time, next_comp)
@@ -54,7 +55,7 @@ for k = 1:length(temps) -1
     end
     
     while isnan(log_shift_factor) || isinf(log_shift_factor)
-        [fitresult, ~] = ref_best_fit(ref_time(3:end), ref_comp(3:end));
+        [fitresult, ~] = ref_best_fit(ref_time, ref_comp);
         time = ref_time;
         time_ext = log10(linspace(10^ref_time(end),10^ref_time(end)+best_fit_exten,best_fit_exten));
         time(end+1:end+length(time_ext)) = time_ext;
@@ -77,8 +78,13 @@ for k = 1:length(temps) -1
 
         % b is an intermediate variable
         b = sum((0.5 * (U(2:end,1) + U(1:end-1,1))) .* (U(2:end,2) - U(1:end-1,2)));
-
-        log_shift_factor = (A - b) / (L(end,2) - U(1,2));
+        
+        try
+          log_shift_factor = (A - b) / (L(end,2) - U(1,2));
+        catch
+          log_shift_factor = NaN;
+        end
+        
         best_fit_exten = best_fit_exten*100
     end
         
