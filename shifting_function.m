@@ -21,14 +21,12 @@ raw_comp(:,3) = t3(:,2);
 raw_comp(:,4) = t4(:,2);
 
 figure(1)
-marker = ['o+^d'];
 for k = 1:length(temps)
     hold on
-    plot(raw_times(:,k), raw_comp(:,k), marker(k),'Linewidth', 1.5)
+    plot(raw_times(:,k), raw_comp(:,k))
 end
-xlabel('log_{10}(t) [min]')
+xlabel('log(t) [min]')
 ylabel('Compliance [1/GPa]')
-set(gca, 'Fontsize', 12)
 
 times = log10(raw_times);
 comp = log10(raw_comp);
@@ -72,16 +70,7 @@ ylabel('log(D) [1/GPa]')
 
 master_comp = 10.^ref_comp;
 figure(3)
-hold on
 plot(ref_time,master_comp, 'k^', 'LineWidth', 1.5)
-marker = ['o+^d'];
-for k = 1:length(temps)
-    hold on
-    plot(raw_times(:,k), raw_comp(:,k), marker(k),'Linewidth', 1.5)
-end
-grid on
-set(gca, 'Fontsize', 12)
-xlabel('log_{10}(t) [min]')
+xlabel('log(t) [min]')
 ylabel('Compliance [1/GPa]')
-legend({'Master Curve', '40^oC', '50^oC', '60^oC', '70^oC', })
 
