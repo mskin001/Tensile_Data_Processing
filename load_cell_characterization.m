@@ -44,5 +44,5 @@ mts(1:ind,:) = [];
 
 bf_x = lc(1:length(mts(:,2)),2);
 bf_y = mts(:,2);
-[fitresult, gof] = lc_fit(bf_x, bf_y)
+[fitresult, gof] = lc_fit(bf_x, 9.81*bf_y)
 
